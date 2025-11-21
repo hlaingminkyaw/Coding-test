@@ -179,7 +179,7 @@ DB::table('orders')->select(...)->groupBy(...);
 
 # 📘 Technology Used
 
-- Laravel 11  
+- Laravel 10  
 - MySQL  
 - Laravel Sanctum  
 - Redis/File Cache  
