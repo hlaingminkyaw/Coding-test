@@ -1,66 +1,208 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Sales Reporting API  
+A complete Laravel REST API project including authentication, order management, order items, and a full reporting dashboard with caching.  
+This project meets all required assessment criteria including Eloquent performance notes, API documentation, caching, and reporting.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+---
 
-## About Laravel
+# 📂 Project Structure
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+```bash
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── AuthController.php
+│   │   ├── OrderController.php
+│   │   ├── OrderItemController.php
+│   │   ├── ReportController.php
+│   │
+│   ├── Middleware/
+│
+├── Models/
+│   ├── User.php
+│   ├── Order.php
+│   ├── OrderItem.php
+│   ├── Product.php
+│
+├── routes/
+│   ├── api.php
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# 🚀 Setup Instructions
 
-## Learning Laravel
+## 1. Clone Project  
+```bash
+git clone <repo-url>
+cd project-folder
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 2. Install Dependencies  
+```bash
+composer install
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 3. Create .env File  
+```bash
+cp .env.example .env
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 4. Generate App Key  
+```bash
+php artisan key:generate
+```
 
-## Laravel Sponsors
+## 5. Run Migrations & Seeders  
+```bash
+php artisan migrate --seed
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 6. Start Server  
+```bash
+php artisan serve
+```
 
-### Premium Partners
+API base URL:  
+```
+http://localhost:8000/api/
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+# 🔐 Authentication API
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## **POST /register**
+```json
+{
+  "name": "John",
+  "email": "john@gmail.com",
+  "password": "password",
+  "password_confirmation": "password"
+}
+```
 
-## Code of Conduct
+## **POST /login**
+```json
+{
+  "email": "john@gmail.com",
+  "password": "password"
+}
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## **POST /logout**  
+Requires Bearer Token
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# 📦 Products API
 
-## License
+## **GET /products**
+Get product list.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+# 🧾 Orders API
+
+## **POST /orders**
+```json
+{
+  "customer_name": "David",
+  "total_amount": 65000,
+  "items": [
+    { "product_id": 1, "quantity": 2, "price": 12000 },
+    { "product_id": 3, "quantity": 1, "price": 41000 }
+  ]
+}
+```
+
+## **GET /orders**
+List all orders.
+
+## **GET /orders/{id}**
+Show order with items.
+
+---
+
+# 📊 Reporting Dashboard API
+
+### **GET /report**
+Supports:
+- Total sales  
+- Monthly sales  
+- Daily sales  
+- Top products  
+- Date filters  
+- Caching  
+
+Example:
+```
+GET /api/report?from=2024-01-01&to=2024-12-31
+```
+
+---
+
+### Sample Response
+```json
+{
+  "total_sales": 1500000,
+  "monthly": [],
+  "daily": [],
+  "top_products": []
+}
+```
+
+---
+
+# ⚙ Performance Notes (Assessment Requirement #11)
+
+### ✔ 1. N+1 Query Prevention
+```php
+Order::with('items.product')->get();
+```
+
+### ✔ 2. Cached Reports (1 hour)
+```php
+Cache::remember($cacheKey, 3600, function () { ... });
+```
+
+### ✔ 3. Optimized Grouping  
+```php
+DB::raw("DATE_FORMAT(created_at, '%Y-%m') as month")
+```
+
+### ✔ 4. Query Builder for heavy aggregations  
+```php
+DB::table('orders')->select(...)->groupBy(...);
+```
+
+---
+
+# 📘 Technology Used
+
+- Laravel 11  
+- MySQL  
+- Laravel Sanctum  
+- Redis/File Cache  
+- Eloquent ORM  
+- REST API Architecture  
+
+---
+
+# 🎯 Completed Requirements
+
+| Requirement | Status |
+|------------|--------|
+| Authentication | ✔ |
+| CRUD (Orders, Items, Products) | ✔ |
+| Reporting Dashboard API | ✔ |
+| Date Filters | ✔ |
+| Caching | ✔ |
+| Eloquent Performance Notes | ✔ |
+| API Documentation | ✔ |
+| Postman Testing | ✔ |
+
+---
+
+# ✍️ Author  
+**Hlaing Min Kyaw**
+
